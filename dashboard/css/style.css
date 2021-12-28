@@ -1,0 +1,33 @@
+body {
+  background-color: #fff8e6;
+}
+form {
+  width: 35%;
+  background: white;
+  margin: 0 auto;
+}
+
+.form {
+  width: 50%;
+  background: white;
+  margin: 0 auto;
+}
+
+.fmodal {
+  width: 100%;
+  background: white;
+  margin: 0 auto;
+}
+
+button {
+  margin: 0 auto;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
