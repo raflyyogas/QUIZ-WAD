@@ -7,11 +7,24 @@
   }
   require('config.php');
 
+  //For Admin ID
   $username = $_SESSION['username'];
   $query = "SELECT * FROM admin where username = '$username'";
   $check = mysqli_query($koneksi,$query);
   $tampilcheck = mysqli_fetch_array($check);
   
+
+  //Counting Total User
+  $counting = "SELECT count(*) as hitung FROM users";
+  $merge = mysqli_query($koneksi,$counting);
+  $tampilcounting = mysqli_fetch_array($merge);
+  $hasilcounting  = $tampilcounting['hitung'];
+
+  //For count total from bookings
+  $count = "SELECT count(*) as total FROM bookings";
+  $data = mysqli_query($koneksi, $count);
+  $hasil = mysqli_fetch_array($data);
+  $tampil = $hasil['total'];
 
 ?>
 
@@ -58,19 +71,14 @@
             <!-- ============================================================== -->
             <!-- Logo -->
             <!-- ============================================================== -->
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand justify-content-center" href="index.php">
               <!-- Logo icon -->
               <b class="logo-icon">
                 <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon -->
-                <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                <img src="../assets/images/icon.jpg" width="50" alt="homepage" class="dark-logo" />
               </b>
               <!--End Logo icon -->
-              <!-- Logo text -->
-              <span class="logo-text">
-                <!-- dark Logo text -->
-                <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-              </span>
             </a>
             <!-- ============================================================== -->
             <!-- End Logo -->
@@ -93,9 +101,6 @@
               <!-- ============================================================== -->
 
               <li class="nav-item hidden-sm-down">
-                <form class="app-search ps-3">
-                  <input type="text" class="form-control" placeholder="Search for..." /> <a class="srh-btn"><i class="ti-search"></i></a>
-                </form>
               </li>
             </ul>
 
@@ -184,9 +189,9 @@
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Daily Sales</h4>
+                  <h4 class="card-title">Total Sales</h4>
                   <div class="text-end">
-                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i> $120</h2>
+                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i> <?= $tampil?></h2>
                     <span class="text-muted">Todays Income</span>
                   </div>
                   <span class="text-success">80%</span>
@@ -201,9 +206,9 @@
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Weekly Sales</h4>
+                  <h4 class="card-title">Total Users</h4>
                   <div class="text-end">
-                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-info"></i> $5,000</h2>
+                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-info"></i><?= $hasilcounting?> / 5</h2>
                     <span class="text-muted">Todays Income</span>
                   </div>
                   <span class="text-info">30%</span>
@@ -234,150 +239,6 @@
             </div>
             <!-- column -->
           </div>
-          <!-- ============================================================== -->
-          <!-- Table -->
-          <!-- ============================================================== -->
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-md-flex">
-                    <h4 class="card-title col-md-10 mb-md-0 mb-3 align-self-center">Projects of the Month</h4>
-                    <div class="col-md-2 ms-auto">
-                      <select class="form-select shadow-none col-md-2 ml-auto">
-                        <option selected>January</option>
-                        <option value="1">February</option>
-                        <option value="2">March</option>
-                        <option value="3">April</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="table-responsive mt-5">
-                    <table class="table stylish-table no-wrap">
-                      <thead>
-                        <tr>
-                          <th class="border-top-0" colspan="2">Assigned</th>
-                          <th class="border-top-0">Name</th>
-                          <th class="border-top-0">Budget</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td style="width: 50px"><span class="round">S</span></td>
-                          <td class="align-middle">
-                            <h6>Sunil Joshi</h6>
-                            <small class="text-muted">Web Designer</small>
-                          </td>
-                          <td class="align-middle">Elite Admin</td>
-                          <td class="align-middle">$3.9K</td>
-                        </tr>
-                        <tr class="active">
-                          <td>
-                            <span class="round"><img src="../assets/images/users/2.jpg" alt="user" width="50" /></span>
-                          </td>
-                          <td class="align-middle">
-                            <h6>Andrew</h6>
-                            <small class="text-muted">Project Manager</small>
-                          </td>
-                          <td class="align-middle">Real Homes</td>
-                          <td class="align-middle">$23.9K</td>
-                        </tr>
-                        <tr>
-                          <td><span class="round round-success">B</span></td>
-                          <td class="align-middle">
-                            <h6>Bhavesh patel</h6>
-                            <small class="text-muted">Developer</small>
-                          </td>
-                          <td class="align-middle">MedicalPro Theme</td>
-                          <td class="align-middle">$12.9K</td>
-                        </tr>
-                        <tr>
-                          <td><span class="round round-primary">N</span></td>
-                          <td class="align-middle">
-                            <h6>Nirav Joshi</h6>
-                            <small class="text-muted">Frontend Eng</small>
-                          </td>
-                          <td class="align-middle">Elite Admin</td>
-                          <td class="align-middle">$10.9K</td>
-                        </tr>
-                        <tr>
-                          <td><span class="round round-warning">M</span></td>
-                          <td class="align-middle">
-                            <h6>Micheal Doe</h6>
-                            <small class="text-muted">Content Writer</small>
-                          </td>
-                          <td class="align-middle">Helping Hands</td>
-                          <td class="align-middle">$12.9K</td>
-                        </tr>
-                        <tr>
-                          <td><span class="round round-danger">N</span></td>
-                          <td class="align-middle">
-                            <h6>Johnathan</h6>
-                            <small class="text-muted">Graphic</small>
-                          </td>
-                          <td class="align-middle">Digital Agency</td>
-                          <td class="align-middle">$2.6K</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- ============================================================== -->
-          <!-- Table -->
-          <!-- ============================================================== -->
-          <!-- ============================================================== -->
-          <!-- Recent blogss -->
-          <!-- ============================================================== -->
-          <div class="row justify-content-center">
-            <!-- Column -->
-            <div class="col-lg-4 col-md-6">
-              <div class="card">
-                <img class="card-img-top img-responsive" src="../assets/images/big/img1.jpg" alt="Card" />
-                <div class="card-body">
-                  <ul class="list-inline d-flex align-items-center">
-                    <li class="ps-0">20 May 2021</li>
-                    <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                  </ul>
-                  <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                </div>
-              </div>
-            </div>
-            <!-- Column -->
-            <!-- Column -->
-            <div class="col-lg-4 col-md-6">
-              <div class="card">
-                <img class="card-img-top img-responsive" src="../assets/images/big/img2.jpg" alt="Card" />
-                <div class="card-body">
-                  <ul class="list-inline d-flex align-items-center">
-                    <li class="ps-0">20 May 2021</li>
-                    <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                  </ul>
-                  <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                </div>
-              </div>
-            </div>
-            <!-- Column -->
-            <!-- Column -->
-            <div class="col-lg-4 col-md-6">
-              <div class="card">
-                <img class="card-img-top img-responsive" src="../assets/images/big/img4.jpg" alt="Card" />
-                <div class="card-body">
-                  <ul class="list-inline d-flex align-items-center">
-                    <li class="ps-0">20 May 2021</li>
-                    <li class="ms-auto"><a href="javascript:void(0)" class="link">3 Comment</a></li>
-                  </ul>
-                  <h3 class="font-normal">Featured Hydroflora Pots Garden &amp; Outdoors</h3>
-                </div>
-              </div>
-            </div>
-            <!-- Column -->
-          </div>
-          <!-- ============================================================== -->
-          <!-- Recent blogss -->
-          <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
@@ -385,7 +246,9 @@
         <!-- ============================================================== -->
         <!-- footer -->
         <!-- ============================================================== -->
-        <footer class="footer text-center">© 2021 Monster Admin by <a href="https://www.wrappixel.com/">wrappixel.com</a></footer>
+        <footer class="footer text-center">
+          <p class="text-black">&copy; Copyright <a href="#" class="text-black" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
+        </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
         <!-- ============================================================== -->
@@ -393,6 +256,20 @@
       <!-- ============================================================== -->
       <!-- End Page wrapper  -->
       <!-- ============================================================== -->
+    </div>
+    <div class="modal fade" id="identitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Created By</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <pre>Nama    : Rafly Yogaswara</pre>
+                    <pre>NIM     : 1202190061</pre>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->

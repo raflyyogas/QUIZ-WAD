@@ -11,7 +11,6 @@
     if(isset($_POST['login'])){
         login($_POST);
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +31,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container">
-            <a class="navbar-brand text-white" href="index.php"><strong>Xenon</strong></a>
+            <a class="navbar-brand text-white" href="../../index.php"><strong>Xenon</strong></a>
         </div>
     </nav>
 
@@ -45,16 +44,6 @@
                 </div>";
         }
     }?>
-
-    <?php if(isset($_SESSION['BerhasilDaftar'])) :?>
-        <div class='alert alert-success alert-dismissible fade show' role='alert'>
-            <strong><?=$_SESSION['BerhasilDaftar'];?></strong> Silahkan Login
-            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-        </div>
-    <?php 
-        unset($_SESSION['BerhasilDaftar']);
-        endif;
-    ?>
     
     <?php if(isset($_SESSION['password'])) :?>
         <div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -68,7 +57,7 @@
 
     <?php if(isset($_SESSION['gagal'])) :?>
         <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-            <strong><?=$_SESSION['gagal'];?></strong> Mohon di check kembali email
+            <strong><?=$_SESSION['gagal'];?></strong> Mohon di check kembali Email
             <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
         </div>
     <?php 

@@ -58,8 +58,9 @@ function login($data){
     $check = "SELECT * from users where email ='$email'";
     $tampilcheck =mysqli_query($koneksi,$check);
     $tampil = mysqli_fetch_array($tampilcheck);
+
     if($email === $tampil['email']){
-        if ($hash === $tampil['password']){
+        if (password_verify($password, $tampil['password'])){
             $_SESSION['id'] = $tampil['id'];
             $_SESSION['nama'] = $tampil['nama'];
             $_SESSION['email'] = $tampil['email'];

@@ -53,12 +53,6 @@
             <button type="button" class="btn btn-outline-light <?=$TextC?>" data-bs-toggle="modal" data-bs-target="#myModal">
                 <i class="bi bi-person-circle"></i> Login 
             </button>
-            <form action="#" method="POST" class="form shadow ms-1 bg-white rounded" style="width:10%">
-                <select name="background" id="background" class="form-select">
-                    <option value="#63b9db">Blue Ocean</option>
-                    <option value="#6c757d">Dark Boba</option>
-                </select>
-            </form>
         </div>
     </nav>
 
@@ -70,8 +64,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <a href="/QUIZ-WAD/dashboard/" class="btn btn-primary" >User</a>
-                    <a href="/QUIZ-WAD/dashboard/admin/" class="btn btn-primary" >Admin</a>
+                    <a href="/QUIZ-WAD/Quiz 2/dashboard/" class="btn btn-primary" >User</a>
+                    <a href="/QUIZ-WAD/Quiz 2/dashboard/admin/" class="btn btn-primary" >Admin</a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>

@@ -57,19 +57,14 @@
             <!-- ============================================================== -->
             <!-- Logo -->
             <!-- ============================================================== -->
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand justify-content-center" href="index.php">
               <!-- Logo icon -->
               <b class="logo-icon">
                 <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                 <!-- Dark Logo icon -->
-                <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
+                <img src="../assets/images/icon.jpg" width="50" alt="homepage" class="dark-logo" />
               </b>
               <!--End Logo icon -->
-              <!-- Logo text -->
-              <span class="logo-text">
-                <!-- dark Logo text -->
-                <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-              </span>
             </a>
             <!-- ============================================================== -->
             <!-- End Logo -->
@@ -92,9 +87,6 @@
               <!-- ============================================================== -->
 
               <li class="nav-item hidden-sm-down">
-                <form class="app-search ps-3">
-                  <input type="text" class="form-control" placeholder="Search for..." /> <a class="srh-btn"><i class="ti-search"></i></a>
-                </form>
               </li>
             </ul>
 
@@ -282,7 +274,9 @@
         <!-- ============================================================== -->
         <!-- footer -->
         <!-- ============================================================== -->
-        <footer class="footer text-center">© 2021 Monster Admin by <a href="https://www.wrappixel.com/">wrappixel.com</a></footer>
+        <footer class="footer text-center">
+          <p class="text-black">&copy; Copyright <a href="#" class="text-black" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
+        </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
         <!-- ============================================================== -->
@@ -290,6 +284,20 @@
       <!-- ============================================================== -->
       <!-- End Page wrapper  -->
       <!-- ============================================================== -->
+    </div>
+    <div class="modal fade" id="identitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Created By</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <pre>Nama    : Rafly Yogaswara</pre>
+                    <pre>NIM     : 1202190061</pre>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
