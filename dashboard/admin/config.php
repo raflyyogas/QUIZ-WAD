@@ -52,4 +52,47 @@ function login ($data){
     }
 }
 
+function profile($data){
+    global $koneksi;
+
+    $id = $data['id'];
+    $username = $data['username'];;
+    $password = mysqli_real_escape_string($koneksi,$data['password']);
+
+    $check = "SELECT * from admin where id ='$id'";
+    $tampil = mysqli_query($koneksi,$check);
+
+    $data = mysqli_num_rows($tampil);
+
+    if($data == 1){
+        $query = "UPDATE admin SET username='$username',password='$password' WHERE id = '$id'";
+        mysqli_query($koneksi,$query);
+
+        $_SESSION['update'] = 'Berhasil update profile';
+
+        header('location:profile.php');
+        exit();
+    
+    }else{
+        $_SESSION['ID'] = 'ID tidak temukan!';
+        header('location:profile.php');
+        exit();
+    }
+}
+
+
+if (isset($_GET['logout'])){
+    
+    session_start();
+    session_unset();
+    $_SESSION = [];
+    session_destroy();
+
+    setcookie('login','',time() - 3600);
+
+    header("Location:login.php?alert=logout");
+    // $_SESSION['logout'] = "Berhasil Logout";
+    
+    // header('location:login.php');
+}
 ?>

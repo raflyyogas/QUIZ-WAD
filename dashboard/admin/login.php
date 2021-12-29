@@ -1,10 +1,10 @@
 <?php
     session_start();
     
-    if(isset($_SESSION['login'])){
-        header("location:index.php");
-        exit;
-    }
+    // if(isset($_SESSION['login'])){
+    //     header("location:index.php");
+    //     exit;
+    // }
 
     require('config.php');
 
@@ -24,17 +24,15 @@
     <!-- style css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
 
     <!-- Javascript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg" style="background-color:<?=$BGcolor?>;">
+    <nav class="navbar navbar-expand-lg bg-primary">
         <div class="container">
-            <a class="navbar-brand <?=$TextC?>" href="http://localhost/QUIZ-WAD/"><strong>Xenon</strong></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
+            <a class="navbar-brand text-white" href="index.php"><strong>Xenon</strong></a>
         </div>
     </nav>
 
@@ -82,12 +80,12 @@
             <h3 class="text-center">Login</h3>
             <hr style="height:5px;border-width:0;color:gray">
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" id="username">
             </div>
             <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" name="username" id="exampleInputPassword1">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="password">
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="remember" name="remember">
@@ -95,11 +93,10 @@
             </div>
             <button type="submit" class="btn btn-primary d-grid col-6 mx-auto" name="login">Login</button
         </form>
-        <p class="text-center mt-3">Belum punya akun? <a href="register.php">Register</a></p>
     </div>
     
-    <footer class="footer" style="background-color:<?=$BGcolor?>;">
-        <p class="text-center mt-3 <?=$TextC?>">&copy; Copyright <a href="#" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
+    <footer class="footer bg-primary sticky-bottom">
+        <p class="text-center mt-3 text-white">&copy; Copyright <a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
     </footer>
 
     <div class="modal fade" id="identitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
