@@ -32,6 +32,10 @@
         bookings($_POST);
     }
 
+
+    $query = "select * from product";
+    $cproduct = mysqli_query($koneksi,$query);
+
     $id = $_SESSION['id'];
     $user = "select * from users where id ='$id'";
     $connect = mysqli_query($koneksi,$user);
@@ -60,8 +64,13 @@
         <!-- style css -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="css/style.css">
-        <!-- Javascript -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+
+        <!-- Javascript -->  
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg" style="background-color:<?=$BGcolor?>;">
@@ -113,42 +122,65 @@
         
         <div class="container">
             <div class="card-group mt-3">
-                <div class="card" style="width: 5rem;">
-                    <img src="https://www.alatkesehatan.id/wp-content/uploads/2016/11/kaca-dental.jpg" width="50" class="card-img-top" alt="Kaca Dental">
-                    <div class="card-body">
-                        <h5 class="card-title">Kaca Dental</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <hr>
-                        <strong>Rp. 500.000</strong>
+            <?php if(mysqli_num_rows($cproduct) == 0){?>
+                <h1 class="text-center">THERE IS NO DATA</h1> 
+            <?php }else{ ?>
+                <?php 
+                while ($product = mysqli_fetch_array($cproduct)){
+                ?>
+                    <div class="card" style="width: 5rem;">
+                        <img src="../dashboard/gambar/<?= $product['gambar'];?>" class="card-img-top"  style="height: 400px;" alt="<?= $product['NamaAlat']?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $product['NamaAlat']?></h5>
+                            <p class="card-text"><?=$product['description']?></p>
+                            <hr>
+                            <strong>Rp <?=number_format($product['harga'], 0, ",", ".")?></strong>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#product<?= $product['id']?>">Pesan Product</a>
+                        </div>
                     </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#KacaDental">Pesan Product</a>
+                    <div class="modal fade" id="product<?= $product['id']?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="#" method="POST" style="width:100%">
+                                    <div class="modal-body">
+                                        <div class="mb-3" hidden>
+                                            <label for="id" class="form-label">ID</label>
+                                            <input type="text" name="id" class="form-control" id="id" value="<?=$_SESSION['id']?>">
+                                        </div>
+                                        <div class="mb-3" hidden>
+                                            <label for="nama" class="form-label">Nama Users</label>
+                                            <input type="text" name="nama" class="form-control" id="nama" value="<?=$tampil['nama']?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="lokasi" class="form-label">Nama Alat</label>
+                                            <input type="text" name="namaAlat" class="form-control" id="namaAlat" value="<?= $product['NamaAlat']?>" readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tanggal" class="form-label">Tanggal Pembelian</label>
+                                            <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" value="<?php echo date("Y-m-d\TH:i:s",time()); ?>" readonly>
+                                        </div>
+                                        <div class="mb-3" >
+                                            <label for="harga" class="form-label">Harga</label>
+                                            <input type="text" name="harga" class="form-control" id="harga" value="<?= $product['harga']?>" readonly>
+                                        </div>
+                                        <div class="mb-3" hidden>
+                                            <label for="status" class="form-label">Status</label>
+                                            <input type="text" name="status" class="form-control" id="status" value="Waiting for payment" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" name="KacaDental">Confirm</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card" style="width: 5rem;">
-                    <img src="https://www.alatkesehatan.id/wp-content/uploads/2016/10/sonde-lurus.jpg" class="card-img-top" alt="Sconde" style="width:auto">
-                    <div class="card-body">
-                        <h5 class="card-title">Sconde</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <hr>
-                        <strong>Rp. 750.000</strong>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#Sconde">Pesan Product</a>
-                    </div>
-                </div>
-                <div class="card" style="width: 5rem;">
-                    <img src="https://www.alatkesehatan.id/wp-content/uploads/2017/02/GM-TGGGCH2.jpg" class="card-img-top" alt="Tang Cabut Gigi Anak">
-                    <div class="card-body">
-                        <h5 class="card-title">Tang Cabut Gigi Anak</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <hr>
-                        <strong>Rp. 600.000</strong>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#TangCabut">Pesan Product</a>
-                    </div>
-                </div>
+            <?php 
+                }
+            } ?>
             </div>
         </div>
         
@@ -156,124 +188,6 @@
             <p class="text-center mt-3 <?=$TextC?>">&copy; Copyright <a href="#" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
         </footer>
 
-        <!-- Modal For Kaca Dental  -->
-        <!-- Modal -->
-        <div class="modal fade" id="KacaDental" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="#" method="POST" style="width:100%">
-                        <div class="modal-body">
-                            <div class="mb-3" hidden>
-                                <label for="id" class="form-label">ID</label>
-                                <input type="text" name="id" class="form-control" id="id" value="<?=$_SESSION['id']?>">
-                            </div>
-                            <div class="mb-3" hidden>
-                                <label for="nama" class="form-label">Nama Users</label>
-                                <input type="text" name="nama" class="form-control" id="nama" value="<?=$tampil['nama']?>">
-                            </div>
-                            <div class="mb-3">
-                                <label for="lokasi" class="form-label">Nama Alat</label>
-                                <input type="text" name="namaAlat" class="form-control" id="namaAlat" value="Kaca Dental" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal Pembelian</label>
-                                <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" value="<?php echo date("Y-m-d\TH:i:s",time()); ?>" readonly>
-                            </div>
-                            <div class="mb-3" >
-                                <label for="harga" class="form-label">Harga</label>
-                                <input type="text" name="harga" class="form-control" id="harga" value="500000" readonly>
-                            </div>
-                            <div class="mb-3" hidden>
-                                <label for="status" class="form-label">Status</label>
-                                <input type="text" name="status" class="form-control" id="status" value="Waiting for payment" readonly>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="KacaDental">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- Modal For Sconde -->
-        <div class="modal fade" id="Sconde" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <form action="#" method="POST" style="width:100%">
-                        <div class="modal-body">
-                            <div class="mb-3" hidden>
-                                <label for="id" class="form-label">ID</label>
-                                <input type="text" name="id" class="form-control" id="id" value="<?=$_SESSION['id']?>">
-                            </div>
-                            <div class="mb-3" hidden>
-                                <label for="nama" class="form-label">Nama Users</label>
-                                <input type="text" name="nama" class="form-control" id="nama" value="<?=$tampil['nama']?>">
-                            </div>
-                            <div class="mb-3" >
-                                <label for="lokasi" class="form-label">Nama Alat</label>
-                                <input type="text" name="namaAlat" class="form-control" id="namaAlat" value="Sconde" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal Pembelian</label>
-                                <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" value="<?php echo date("Y-m-d\TH:i:s",time()); ?>" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="harga" class="form-label">Harga</label>
-                                <input type="text" name="harga" class="form-control" id="harga" value="750000" readonly>
-                            </div>
-                            <div class="mb-3" hidden>
-                                <label for="status" class="form-label">Status</label>
-                                <input type="text" name="status" class="form-control" id="status" value="Waiting for payment" readonly>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="Sconde">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- Modal For Tanah Lot -->
-        <div class="modal fade" id="TangCabut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <form action="#" method="POST" style="width:100%">
-                        <div class="modal-body">
-                            <div class="mb-3" hidden>
-                                <label for="id" class="form-label">ID</label>
-                                <input type="text" name="id" class="form-control" id="id" value="<?=$_SESSION['id']?>">
-                            </div>
-                            <div class="mb-3" hidden>
-                                <label for="nama" class="form-label">Nama Users</label>
-                                <input type="text" name="nama" class="form-control" id="nama" value="<?=$tampil['nama']?>">
-                            </div>
-                            <div class="mb-3" >
-                                <label for="lokasi" class="form-label">Nama Alat</label>
-                                <input type="text" name="namaAlat" class="form-control" id="namaAlat" value="Tang Cabut Gigi Anak" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal Pembelian</label>
-                                <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" value="<?php echo date("Y-m-d\TH:i:s",time()); ?>" readonly>
-                            </div>
-                            <div class="mb-3" >
-                                <label for="harga" class="form-label">Harga</label>
-                                <input type="text" name="harga" class="form-control" id="harga" value="600000" readonly>
-                            </div>
-                            <div class="mb-3" hidden>
-                                <label for="status" class="form-label">Status</label>
-                                <input type="text" name="status" class="form-control" id="status" value="Waiting for payment">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="TangCabut">Confirm</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <!-- FOOTER -->
 
         <div class="modal fade" id="identitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -290,6 +204,7 @@
                 </div>
             </div>
         </div>
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
         
     </body>
 </html>

@@ -17,14 +17,20 @@
   //Counting Total User
   $counting = "SELECT count(*) as hitung FROM users";
   $merge = mysqli_query($koneksi,$counting);
-  $tampilcounting = mysqli_fetch_array($merge);
-  $hasilcounting  = $tampilcounting['hitung'];
+  $tampiluser = mysqli_fetch_array($merge);
+  $countinguser  = $tampiluser['hitung'];
 
   //For count total from bookings
   $count = "SELECT count(*) as total FROM bookings";
   $data = mysqli_query($koneksi, $count);
   $hasil = mysqli_fetch_array($data);
   $tampil = $hasil['total'];
+
+  // Counting total product
+  $counts = "SELECT count(*) as totalproduct FROM product";
+  $dataproduct = mysqli_query($koneksi, $counts);
+  $hasilcounting = mysqli_fetch_array($dataproduct);
+  $tampilproduct = $hasilcounting['totalproduct'];
 
   // Listing Transaction
   $querylist = "SELECT * from bookings";
@@ -161,9 +167,9 @@
               <li class="sidebar-item">
                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="transaksi.php" aria-expanded="false"> <i class="me-3 fa fa-box-open" aria-hidden="true"></i><span class="hide-menu">Transaksi</span></a>
               </li>
-              <!-- <li class="sidebar-item">
+              <li class="sidebar-item">
                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="product.php" aria-expanded="false"> <i class="me-3 fa fa-box-open" aria-hidden="true"></i><span class="hide-menu">Add Product</span></a>
-              </li> -->
+              </li>
             </ul>
           </nav>
           <!-- End Sidebar navigation -->
@@ -212,7 +218,7 @@
                 <div class="card-body">
                   <h4 class="card-title">Total Pemesanan</h4>
                   <div class="text-end">
-                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i> <?= $tampil?></h2>
+                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i> <?= $tampil?> / <?=$tampilproduct?></h2>
                     <span class="text-muted">Todays Income</span>
                   </div>
                   <span class="text-success">5%</span>
@@ -229,7 +235,7 @@
                 <div class="card-body">
                   <h4 class="card-title">Total Users</h4>
                   <div class="text-end">
-                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-info"></i><?= $hasilcounting?> / 5</h2>
+                    <h2 class="font-light mb-0"><i class="ti-arrow-up text-info"></i><?= $countinguser?> / 5</h2>
                     <span class="text-muted">Todays Income</span>
                   </div>
                   <span class="text-info">30%</span>
@@ -266,7 +272,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                      <h4 class="card-title">Daftar User</h4>
+                      <h4 class="card-title">Daftar Product</h4>
                       <div class="table-responsive">
                       <?php if(mysqli_num_rows($connectproduct) >= 1){?>
                         <table class="table user-table no-wrap">
@@ -276,7 +282,6 @@
                                     <th class="border-top-0">Nama Alat</th>
                                     <th class="border-top-0">Description</th>
                                     <th class="border-top-0">Harga</th>
-                                    <th class="border-top-0">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -287,10 +292,7 @@
                                     <td><?=$tampil['id']?></td>
                                     <td><?=$tampil['NamaAlat']?></td>
                                     <td><?=$tampil['description']?></td>
-                                    <td><?=$tampil['harga']?></td>
-                                    <td>
-                                      <a class="btn btn-warning" href="product.php" role="button">Ubah Status</a>
-                                    </td>
+                                    <td>Rp <?=number_format($tampil['harga'], 0, ",", ".")?></td>
                                 </tr>
                               <?php 
                                 }
@@ -335,7 +337,7 @@
                                     <td><?=$tampil['email']?></td>
                                     <td><?=$tampil['no_hp']?></td>
                                     <td>
-                                      <a class="btn btn-warning" href="user.php" role="button">Ubah Status</a>
+                                      <a class="btn btn-warning" href="user.php" role="button">Ubah User</a>
                                     </td>
                                 </tr>
                               <?php 

@@ -135,9 +135,9 @@
               <li class="sidebar-item">
                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="transaksi.php" aria-expanded="false"> <i class="me-3 fa fa-box-open" aria-hidden="true"></i><span class="hide-menu">Transaksi</span></a>
               </li>
-              <!-- <li class="sidebar-item">
+              <li class="sidebar-item">
                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="product.php" aria-expanded="false"> <i class="me-3 fa fa-box-open" aria-hidden="true"></i><span class="hide-menu">Add Product</span></a>
-              </li> -->
+              </li>
             </ul>
           </nav>
           <!-- End Sidebar navigation -->
