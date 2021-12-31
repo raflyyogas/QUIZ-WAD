@@ -53,13 +53,15 @@ function login($data){
 
     $email = $data['email'];
     $password = $data['password'];
-    $hash = password_hash($password,PASSWORD_BCRYPT);
     
     $check = "SELECT * from users where email ='$email'";
     $tampilcheck =mysqli_query($koneksi,$check);
     $tampil = mysqli_fetch_array($tampilcheck);
 
     if($email === $tampil['email']){
+        if(isset($_POST['remember'])){
+            setcookie('login','true',time()+1800);
+        }
         if (password_verify($password, $tampil['password'])){
             $_SESSION['id'] = $tampil['id'];
             $_SESSION['nama'] = $tampil['nama'];
@@ -69,9 +71,6 @@ function login($data){
             $_SESSION['masuk'] = 'Berhasil Login';
 
             $_SESSION['login'] = true;
-            if(isset($_POST['remember'])){
-                setcookie('login','true',time()+1800);
-            }
             
             header("location:index.php");
             exit();
@@ -98,7 +97,6 @@ function profile($data){
     $hp = $data['no_hp'];
     $password = mysqli_real_escape_string($koneksi,$data['sandi']);
     $confpw = mysqli_real_escape_string($koneksi,$data['conf']);
-    $bgcolor = $data['background'];
 
     $check = "SELECT * from users where id ='$id'";
     $tampil = mysqli_query($koneksi,$check);
@@ -111,8 +109,6 @@ function profile($data){
             $hash = password_hash($password,PASSWORD_BCRYPT);
             $query = "UPDATE users SET nama='$nama',email='$email',password='$hash',no_hp='$hp' WHERE id = '$id'";
             mysqli_query($koneksi,$query);
-
-            setcookie('color',$bgcolor,time()+1800);
             $_SESSION['update'] = 'Berhasil update profile';
 
             header('location:profile.php');
@@ -128,26 +124,24 @@ function profile($data){
     exit();
 }
 
-function jadwal($data){
+function bookings($data){
     global $koneksi;
 
     $id = $data['id'];
-    $nama = $data['nama'];
-    $lokasi = $data['lokasi'];
+    $namaUser = $data['nama'];
+    $namaAlat = $data['namaAlat'];
     $harga = $data['harga'];
     $tanggal = $data['tanggal'];
+    $status = $data['status'];
 
-    $query = "INSERT INTO bookings (id,user_id, nama_tempat, lokasi, harga, tanggal) VALUES ('','$id','$nama','$lokasi','$harga','$tanggal')";
+    $query = "INSERT INTO bookings (id,user_id, namaUser, namaAlat, harga, tanggal, status) VALUES ('','$id','$namaUser','$namaAlat','$harga','$tanggal','$status')";
     $hasil = mysqli_query($koneksi,$query);
-    if(!$hasil){
-        die(mysqli_error($koneksi));
-        exit();
-    }else{
-        $_SESSION['Berhasil'] = 'Berhasil memesan tiket!';
-        header('location:index.php');
-        exit();
-    }
+    $_SESSION['Berhasil'] = 'Berhasil memesan tiket!';
+    header('location:index.php');
+    exit();
 }
+
+
 
 if (isset($_GET['logout'])){
     
@@ -159,9 +153,6 @@ if (isset($_GET['logout'])){
     setcookie('login','',time() - 3600);
 
     header("Location:login.php?alert=logout");
-    // $_SESSION['logout'] = "Berhasil Logout";
-    
-    // header('location:login.php');
 }
 
 if (isset($_GET['delete'])){

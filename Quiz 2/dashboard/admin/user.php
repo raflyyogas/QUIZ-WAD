@@ -1,25 +1,14 @@
 <?php
-  session_start();
+  session_start(); 
+  
   if(!isset($_SESSION['admin'])){
-    header("location :login.php");
+    header("location:login.php");
+    exit;
   }
-
   require('config.php');
-
-
-  if(isset($_POST['update'])){
-    profile($_POST);
-  }
-
-  $id = $_SESSION['id'];
-  $data = mysqli_query($koneksi,"select * from admin where id='$id'");
-  $tampil = mysqli_fetch_assoc($data);
-
-
-
-
+  $query = "SELECT * FROM users";
+  $connect = mysqli_query($koneksi,$query);
 ?>
-
 
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -28,10 +17,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex,nofollow" />
     <title>Rafly Yogaswara 1202190061 SI4301</title>
     <!-- Custom CSS -->
+    <link href="../assets/plugins/chartist/dist/chartist.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
 
   <body>
@@ -39,15 +35,15 @@
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
     <div class="preloader">
-      <div class="lds-ripple">
-        <div class="lds-pos"></div>
-        <div class="lds-pos"></div>
-      </div>
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
     </div>
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
       <!-- ============================================================== -->
       <!-- Topbar header - style you can find in pages.scss -->
       <!-- ============================================================== -->
@@ -99,7 +95,7 @@
               <!-- ============================================================== -->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="../assets/images/users/1.jpg" alt="user" class="profile-pic me-2" /><?= $tampil['username'];?>
+                  <img src="../assets/images/users/1.jpg" alt="user" class="profile-pic me-2" /><?=$tampilcheck['username']?>
                 </a>
                 <ul class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
                     <li><a class='dropdown-item' href='profile.php?admin=<?=$_SESSION['id']?>'>Profile</a></li>
@@ -111,7 +107,7 @@
         </nav>
       </header>
       <!-- ============================================================== -->
-      <!-- End Topbar headser -->
+      <!-- End Topbar header -->
       <!-- ============================================================== -->
       <!-- ============================================================== -->
       <!-- Left Sidebar - style you can find in sidebar.scss  -->
@@ -157,12 +153,12 @@
         <div class="page-breadcrumb">
           <div class="row align-items-center">
             <div class="col-md-6 col-8 align-self-center">
-              <h3 class="page-title mb-0 p-0">Profile</h3>
+              <h3 class="page-title mb-0 p-0">Edit User</h3>
               <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit User</li>
                   </ol>
                 </nav>
               </div>
@@ -175,101 +171,74 @@
         <!-- ============================================================== -->
         <!-- Container fluid  -->
         <!-- ============================================================== -->
-        <?php if(isset($_SESSION['update'])) :?>
-            <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                <strong><?=$_SESSION['update'];?></strong>
-                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>
-        <?php 
-            unset($_SESSION['update']);
-            endif;
-        ?>
-        
-        <?php if(isset($_SESSION['TidakSama'])) :?>
-            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                <strong><?=$_SESSION['TidakSama'];?></strong> Mohon di check kembali
-                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>
-        <?php 
-            unset($_SESSION['TidakSama']);
-            endif;
-        ?>
-        
-        
-        <?php if(isset($_SESSION['ID'])) :?>
-            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                <strong><?=$_SESSION['ID'];?></strong> Mohon di check kembali
-                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>
-        <?php 
-            unset($_SESSION['ID']);
-            endif;
-        ?>
-        <div class="container-fluid">
-          <!-- ============================================================== -->
-          <!-- Start Page Content -->
-          <!-- ============================================================== -->
-          <!-- Row -->
-          <div class="row">
-            <!-- Column -->
-            <div class="col-lg-4 col-xlg-3 col-md-5">
-              <div class="card">
-                <div class="card-body profile-card">
-                  <center class="mt-4">
-                    <img src="../assets/images/users/5.jpg" class="rounded-circle" width="150" />
-                    <h4 class="card-title mt-2"><?=$tampil['username']?></h4>
-                    <h6 class="card-subtitle">Administrator</h6>
-                  </center>
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <!-- column -->
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">User</h4>
+                                <h6 class="card-subtitle">Choose users that you gonna edit</h6>
+                                  <div class="table-responsive">
+                                    
+                                    <?php if(mysqli_num_rows($connect) >= 1){?>
+                                      <table class="table user-table no-wrap">
+                                          <thead>
+                                              <tr>
+                                                  <th class="border-top-0">No</th>
+                                                  <th class="border-top-0">Nama</th>
+                                                  <th class="border-top-0">Email</th>
+                                                  <th class="border-top-0">Action</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                            <?php 
+                                              $noUrut = 1;
+                                              while ($tampil = mysqli_fetch_assoc($connect)){
+                                            ?>
+                                              <tr>
+                                                  <td><?=$noUrut?></td>
+                                                  <td><?=$tampil['nama']?></td>
+                                                  <td><?=$tampil['email']?></td>
+                                                  <td>
+                                                    <a class="btn btn-primary" href="edituser.php?edit=<?=$tampil['id']?>" role="button">Edit User</a>
+                                                  </td>
+                                              </tr>
+                                            <?php 
+                                              $noUrut++;
+                                              }
+                                            ?>
+                                          </tbody>
+                                      </table>
+                                    <?php }else{
+                                      echo '<h1 class="text-center">THERE IS NO DATA</h1>';
+                                    }
+                                      ?>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+                <!-- .right-sidebar -->
+                <!-- ============================================================== -->
+                <!-- End Right sidebar -->
+                <!-- ============================================================== -->
             </div>
-            <!-- Column -->
-            <!-- Column -->
-            <div class="col-lg-8 col-xlg-9 col-md-7">
-              <div class="card">
-                <div class="card-body">
-                  <form action ="#" method="POST" class="form-horizontal form-material mx-2">
-                    <div class="form-group" hidden>
-                      <label class="col-md-12 mb-0">ID</label>
-                      <div class="col-md-12">
-                        <input name="id" type="text" class="form-control ps-0 form-control-line" id="id" value="<?php echo $tampil['id'];?>" name="<?php echo $tampil['id'];?>" readonly>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-12 mb-0">Username</label>
-                      <div class="col-md-12">
-                        <input type="text" name="username" class="form-control ps-0 form-control-line" value="<?= $tampil['username']?>"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-12 mb-0">Password</label>
-                      <div class="col-md-12">
-                        <input type="password" placeholder="password" name="password" id="password" class="form-control ps-0 form-control-line" />
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-12 d-flex">
-                        <button type="submit" class="btn btn-success mx-auto mx-md-0 text-white" name="update" id="update">Update Profile</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!-- Column -->
-          </div>
-          <!-- Row -->
-          <!-- ============================================================== -->
-          <!-- End PAge Content -->
-          <!-- ============================================================== -->
-          <!-- ============================================================== -->
-          <!-- Right sidebar -->
-          <!-- ============================================================== -->
-          <!-- .right-sidebar -->
-          <!-- ============================================================== -->
-          <!-- End Right sidebar -->
-          <!-- ============================================================== -->
-        </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
         <!-- ============================================================== -->
@@ -317,5 +286,10 @@
     <script src="js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="js/custom.js"></script>
+    <!--This page JavaScript -->
+    <!--flot chart-->
+    <script src="../assets/plugins/flot/jquery.flot.js"></script>
+    <script src="../assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script src="js/pages/dashboards/dashboard1.js"></script>
   </body>
 </html>

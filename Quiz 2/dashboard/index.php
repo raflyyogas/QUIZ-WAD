@@ -28,15 +28,23 @@
     }
 
     require('config.php');
+    if(isset($_POST['submit'])){
+        bookings($_POST);
+    }
 
-    if(isset($_POST['RajaAmpat'])){
-        jadwal($_POST);
+    $id = $_SESSION['id'];
+    $user = "select * from users where id ='$id'";
+    $connect = mysqli_query($koneksi,$user);
+    $tampil = mysqli_fetch_assoc($connect);
+
+    if(isset($_POST['KacaDental'])){
+        bookings($_POST);
         exit;
-    }elseif(isset($_POST['Bromo'])){
-        jadwal($_POST);
+    }elseif(isset($_POST['Sconde'])){
+        bookings($_POST);
         exit;
-    }elseif(isset($_POST['TanahLot'])){
-        jadwal($_POST);
+    }elseif(isset($_POST['TangCabut'])){
+        bookings($_POST);
         exit;
     }
 ?>
@@ -104,46 +112,41 @@
         ?>
         
         <div class="container">
-            <div class="p-5 rounded-3 bg-success">
-                <div class="container mx-auto bg-success">
-                    <p class="text-center" style="font-size: 50px;"><strong>XENON DENTAL</strong></p>
-                </div>
-            </div>
-            <div class="card-group">
-                <div class="card" style="width: 18rem;">
-                    <img src="img/RajaAmpat.jpg" class="card-img-top" alt="Raja Ampat">
+            <div class="card-group mt-3">
+                <div class="card" style="width: 5rem;">
+                    <img src="https://www.alatkesehatan.id/wp-content/uploads/2016/11/kaca-dental.jpg" width="50" class="card-img-top" alt="Kaca Dental">
                     <div class="card-body">
-                        <h5 class="card-title">Raja Ampat, Papua</h5>
+                        <h5 class="card-title">Kaca Dental</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         <hr>
-                        <strong>Rp. 7.000.000</strong>
+                        <strong>Rp. 500.000</strong>
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#RajaAmpat">Pesan Tiket</a>
+                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#KacaDental">Pesan Product</a>
                     </div>
                 </div>
-                <div class="card" style="width: 18rem;">
-                    <img src="img/Bromo.jpg" class="card-img-top" alt="Gunung Bromo" style="width:auto">
+                <div class="card" style="width: 5rem;">
+                    <img src="https://www.alatkesehatan.id/wp-content/uploads/2016/10/sonde-lurus.jpg" class="card-img-top" alt="Sconde" style="width:auto">
                     <div class="card-body">
-                        <h5 class="card-title">Gunung Bromo, Malang</h5>
+                        <h5 class="card-title">Sconde</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         <hr>
-                        <strong>Rp. 2.000.000</strong>
+                        <strong>Rp. 750.000</strong>
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#Bromo">Pesan Tiket</a>
+                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#Sconde">Pesan Product</a>
                     </div>
                 </div>
-                <div class="card" style="width: 18rem;">
-                    <img src="img/tanahlot.jpg" class="card-img-top" alt="Tanah Lot">
+                <div class="card" style="width: 5rem;">
+                    <img src="https://www.alatkesehatan.id/wp-content/uploads/2017/02/GM-TGGGCH2.jpg" class="card-img-top" alt="Tang Cabut Gigi Anak">
                     <div class="card-body">
-                        <h5 class="card-title">Tanah Lot, Bali</h5>
+                        <h5 class="card-title">Tang Cabut Gigi Anak</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         <hr>
-                        <strong>Rp. 5.000.000</strong>
+                        <strong>Rp. 600.000</strong>
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#TanahLot">Pesan Tiket</a>
+                        <a href="#" class="btn btn-primary d-grid col-15 mx-auto" data-bs-toggle="modal" data-bs-target="#TangCabut">Pesan Product</a>
                     </div>
                 </div>
             </div>
@@ -153,110 +156,119 @@
             <p class="text-center mt-3 <?=$TextC?>">&copy; Copyright <a href="#" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
         </footer>
 
-        <!-- Modal For Raja Ampat  -->
+        <!-- Modal For Kaca Dental  -->
         <!-- Modal -->
-        <div class="modal fade" id="RajaAmpat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="KacaDental" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form action="#" method="POST" style="width:100%">
                         <div class="modal-body">
-                            
                             <div class="mb-3" hidden>
                                 <label for="id" class="form-label">ID</label>
                                 <input type="text" name="id" class="form-control" id="id" value="<?=$_SESSION['id']?>">
                             </div>
                             <div class="mb-3" hidden>
-                                <label for="lokasi" class="form-label">Nama Tempat</label>
-                                <input type="text" name="nama" class="form-control" id="lokasi" value="Raja Ampat">
-                            </div>
-                            <div class="mb-3" hidden>
-                                <label for="id" class="form-label">Lokasi</label>
-                                <input type="text" name="lokasi" class="form-control" id="lokasi" value="Papua">
+                                <label for="nama" class="form-label">Nama Users</label>
+                                <input type="text" name="nama" class="form-control" id="nama" value="<?=$tampil['nama']?>">
                             </div>
                             <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal Perjalanan</label>
-                                <input type="date" name="tanggal" class="form-control" id="tanggal">
+                                <label for="lokasi" class="form-label">Nama Alat</label>
+                                <input type="text" name="namaAlat" class="form-control" id="namaAlat" value="Kaca Dental" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tanggal" class="form-label">Tanggal Pembelian</label>
+                                <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" value="<?php echo date("Y-m-d\TH:i:s",time()); ?>" readonly>
+                            </div>
+                            <div class="mb-3" >
+                                <label for="harga" class="form-label">Harga</label>
+                                <input type="text" name="harga" class="form-control" id="harga" value="500000" readonly>
                             </div>
                             <div class="mb-3" hidden>
-                                <label for="harga" class="form-label">Harga</label>
-                                <input type="text" name="harga" class="form-control" id="harga" value="7000000">
+                                <label for="status" class="form-label">Status</label>
+                                <input type="text" name="status" class="form-control" id="status" value="Waiting for payment" readonly>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="RajaAmpat">Save changes</button>
+                            <button type="submit" class="btn btn-primary" name="KacaDental">Confirm</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <!-- Modal For Bromo -->
-        <div class="modal fade" id="Bromo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- Modal For Sconde -->
+        <div class="modal fade" id="Sconde" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <form action="#" method="POST" style="width:100%">
                         <div class="modal-body">
-                            
                             <div class="mb-3" hidden>
                                 <label for="id" class="form-label">ID</label>
                                 <input type="text" name="id" class="form-control" id="id" value="<?=$_SESSION['id']?>">
                             </div>
                             <div class="mb-3" hidden>
-                                <label for="lokasi" class="form-label">Nama Tempat</label>
-                                <input type="text" name="nama" class="form-control" id="lokasi" value="Gunung Bromo">
+                                <label for="nama" class="form-label">Nama Users</label>
+                                <input type="text" name="nama" class="form-control" id="nama" value="<?=$tampil['nama']?>">
                             </div>
-                            <div class="mb-3" hidden>
-                                <label for="id" class="form-label">Lokasi</label>
-                                <input type="text" name="lokasi" class="form-control" id="lokasi" value="Malang">
+                            <div class="mb-3" >
+                                <label for="lokasi" class="form-label">Nama Alat</label>
+                                <input type="text" name="namaAlat" class="form-control" id="namaAlat" value="Sconde" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal Perjalanan</label>
-                                <input type="date" name="tanggal" class="form-control" id="tanggal">
+                                <label for="tanggal" class="form-label">Tanggal Pembelian</label>
+                                <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" value="<?php echo date("Y-m-d\TH:i:s",time()); ?>" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="harga" class="form-label">Harga</label>
+                                <input type="text" name="harga" class="form-control" id="harga" value="750000" readonly>
                             </div>
                             <div class="mb-3" hidden>
-                                <label for="harga" class="form-label">Harga</label>
-                                <input type="text" name="harga" class="form-control" id="harga" value="2000000">
+                                <label for="status" class="form-label">Status</label>
+                                <input type="text" name="status" class="form-control" id="status" value="Waiting for payment" readonly>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="Bromo">Save changes</button>
+                            <button type="submit" class="btn btn-primary" name="Sconde">Confirm</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
         <!-- Modal For Tanah Lot -->
-        <div class="modal fade" id="TanahLot" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="TangCabut" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <form action="#" method="POST" style="width:100%">
                         <div class="modal-body">
-                            
                             <div class="mb-3" hidden>
                                 <label for="id" class="form-label">ID</label>
                                 <input type="text" name="id" class="form-control" id="id" value="<?=$_SESSION['id']?>">
                             </div>
                             <div class="mb-3" hidden>
-                                <label for="lokasi" class="form-label">Nama Tempat</label>
-                                <input type="text" name="nama" class="form-control" id="lokasi" value="Tanah Lot">
+                                <label for="nama" class="form-label">Nama Users</label>
+                                <input type="text" name="nama" class="form-control" id="nama" value="<?=$tampil['nama']?>">
                             </div>
-                            <div class="mb-3" hidden>
-                                <label for="id" class="form-label">Lokasi</label>
-                                <input type="text" name="lokasi" class="form-control" id="lokasi" value="Bali">
+                            <div class="mb-3" >
+                                <label for="lokasi" class="form-label">Nama Alat</label>
+                                <input type="text" name="namaAlat" class="form-control" id="namaAlat" value="Tang Cabut Gigi Anak" readonly>
                             </div>
                             <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal Perjalanan</label>
-                                <input type="date" name="tanggal" class="form-control" id="tanggal">
+                                <label for="tanggal" class="form-label">Tanggal Pembelian</label>
+                                <input type="datetime-local" name="tanggal" class="form-control" id="tanggal" value="<?php echo date("Y-m-d\TH:i:s",time()); ?>" readonly>
+                            </div>
+                            <div class="mb-3" >
+                                <label for="harga" class="form-label">Harga</label>
+                                <input type="text" name="harga" class="form-control" id="harga" value="600000" readonly>
                             </div>
                             <div class="mb-3" hidden>
-                                <label for="harga" class="form-label">Harga</label>
-                                <input type="text" name="harga" class="form-control" id="harga" value="5000000">
+                                <label for="status" class="form-label">Status</label>
+                                <input type="text" name="status" class="form-control" id="status" value="Waiting for payment">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="TanahLot">Save changes</button>
+                            <button type="submit" class="btn btn-primary" name="TangCabut">Confirm</button>
                         </div>
                     </form>
                 </div>

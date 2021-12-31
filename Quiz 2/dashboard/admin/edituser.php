@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if(!isset($_SESSION['admin'])){
+  if(!isset($_SESSION['login'])){
     header("location :login.php");
   }
 
@@ -8,15 +8,12 @@
 
 
   if(isset($_POST['update'])){
-    profile($_POST);
+    edituser($_POST);
   }
 
-  $id = $_SESSION['id'];
-  $data = mysqli_query($koneksi,"select * from admin where id='$id'");
+  $id = $_GET['edit'];
+  $data = mysqli_query($koneksi,"select * from users where id='$id'");
   $tampil = mysqli_fetch_assoc($data);
-
-
-
 
 ?>
 
@@ -217,8 +214,8 @@
                 <div class="card-body profile-card">
                   <center class="mt-4">
                     <img src="../assets/images/users/5.jpg" class="rounded-circle" width="150" />
-                    <h4 class="card-title mt-2"><?=$tampil['username']?></h4>
-                    <h6 class="card-subtitle">Administrator</h6>
+                    <h4 class="card-title mt-2"><?=$tampil['nama']?></h4>
+                    <h6 class="card-subtitle">Users</h6>
                   </center>
                 </div>
               </div>
@@ -229,16 +226,22 @@
               <div class="card">
                 <div class="card-body">
                   <form action ="#" method="POST" class="form-horizontal form-material mx-2">
-                    <div class="form-group" hidden>
+                    <div class="form-group">
                       <label class="col-md-12 mb-0">ID</label>
                       <div class="col-md-12">
-                        <input name="id" type="text" class="form-control ps-0 form-control-line" id="id" value="<?php echo $tampil['id'];?>" name="<?php echo $tampil['id'];?>" readonly>
+                        <input name="id" type="text" class="form-control ps-0 form-control-line" id="id" value="<?=$id?>" name="<?=$id?>" readonly>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-md-12 mb-0">Username</label>
+                      <label class="col-md-12 mb-0">Nama</label>
                       <div class="col-md-12">
-                        <input type="text" name="username" class="form-control ps-0 form-control-line" value="<?= $tampil['username']?>"/>
+                        <input type="text" name="nama" class="form-control ps-0 form-control-line" value="<?= $tampil['nama']?>"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-12 mb-0">Email</label>
+                      <div class="col-md-12">
+                        <input type="email" name="email" class="form-control ps-0 form-control-line" value="<?= $tampil['email']?>"/>
                       </div>
                     </div>
                     <div class="form-group">
@@ -250,6 +253,7 @@
                     <div class="form-group">
                       <div class="col-sm-12 d-flex">
                         <button type="submit" class="btn btn-success mx-auto mx-md-0 text-white" name="update" id="update">Update Profile</button>
+                        <a class="btn btn-danger ms-2" href="config.php?delete=<?=$id?>" role="button">Hapus</a>
                       </div>
                     </div>
                   </form>

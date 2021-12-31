@@ -83,6 +83,9 @@
                 <hr class="rounded-3" style="height:5px;border-width:0;color:white"/>
             </div>
             <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab iste corporis rerum autem totam repudiandae unde, aliquid voluptate incidunt similique voluptates expedita in adipisci, dolor suscipit voluptas omnis deleniti eius qui commodi modi sapiente animi quae? Reprehenderit eaque commodi maiores maxime ex recusandae accusantium impedit. Architecto accusamus nulla nemo et labore saepe! Eum quod neque atque possimus explicabo ipsam eius commodi itaque alias delectus ut aliquam exercitationem, magnam animi hic unde eos! Inventore, repellendus minus! Ad et eius natus voluptates quis in? Dolor ullam adipisci, labore illum numquam tempore officiis dignissimos quas quia sit vitae cum pariatur voluptate quaerat molestias!</p>
+            <div class="text-center">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/ZE-TtFhZlDw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffffff" fill-opacity="1" d="M0,160L20,181.3C40,203,80,245,120,245.3C160,245,200,203,240,186.7C280,171,320,181,360,192C400,203,440,213,480,202.7C520,192,560,160,600,122.7C640,85,680,43,720,48C760,53,800,107,840,133.3C880,160,920,160,960,170.7C1000,181,1040,203,1080,186.7C1120,171,1160,117,1200,85.3C1240,53,1280,43,1320,42.7C1360,43,1400,53,1420,58.7L1440,64L1440,320L1420,320C1400,320,1360,320,1320,320C1280,320,1240,320,1200,320C1160,320,1120,320,1080,320C1040,320,1000,320,960,320C920,320,880,320,840,320C800,320,760,320,720,320C680,320,640,320,600,320C560,320,520,320,480,320C440,320,400,320,360,320C320,320,280,320,240,320C200,320,160,320,120,320C80,320,40,320,20,320L0,320Z"></path></svg>
     </section>
@@ -176,7 +179,7 @@
     </section>
         
     <footer class="p-3" style="background-color:<?=$BGcolor?>;">
-        <p class="text-center text-white">&copy; Copyright <a href="#" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
+        <p class="text-center text-black">&copy; Copyright <a class="text-black" href="#" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
     </footer>
 
     <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="bi bi-arrow-up-circle"></i></button>

@@ -1,12 +1,12 @@
 <?php
   session_start(); 
   
-  if(!isset($_SESSION['login'])){
+  require('config.php');
+
+  if(!isset($_SESSION['admin'])){
     header("location:login.php");
     exit;
   }
-  require('config.php');
-
   //For Admin ID
   $username = $_SESSION['username'];
   $query = "SELECT * FROM admin where username = '$username'";
@@ -26,6 +26,18 @@
   $hasil = mysqli_fetch_array($data);
   $tampil = $hasil['total'];
 
+  // Listing Transaction
+  $querylist = "SELECT * from bookings";
+  $connect = mysqli_query($koneksi,$querylist);
+
+  // Listing User
+  $queryusers = "SELECT * from users";
+  $connectusers = mysqli_query($koneksi,$queryusers);
+
+  //Listing Product
+  
+  $queryproduct = "SELECT * from product";
+  $connectproduct = mysqli_query($koneksi,$queryproduct);
 ?>
 
 <!DOCTYPE html>
@@ -52,12 +64,12 @@
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <!-- <div class="preloader">
+    <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div> -->
+    </div>
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -143,6 +155,15 @@
               <li class="sidebar-item">
                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.php?admin=<?=$_SESSION['id']?>" aria-expanded="false"> <i class="me-3 fa fa-user" aria-hidden="true"></i><span class="hide-menu">Profile</span></a>
               </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="user.php" aria-expanded="false"> <i class="me-3 fa fa-users" aria-hidden="true"></i><span class="hide-menu">Edit User</span></a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="transaksi.php" aria-expanded="false"> <i class="me-3 fa fa-box-open" aria-hidden="true"></i><span class="hide-menu">Transaksi</span></a>
+              </li>
+              <!-- <li class="sidebar-item">
+                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="product.php" aria-expanded="false"> <i class="me-3 fa fa-box-open" aria-hidden="true"></i><span class="hide-menu">Add Product</span></a>
+              </li> -->
             </ul>
           </nav>
           <!-- End Sidebar navigation -->
@@ -189,14 +210,14 @@
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Total Sales</h4>
+                  <h4 class="card-title">Total Pemesanan</h4>
                   <div class="text-end">
                     <h2 class="font-light mb-0"><i class="ti-arrow-up text-success"></i> <?= $tampil?></h2>
                     <span class="text-muted">Todays Income</span>
                   </div>
-                  <span class="text-success">80%</span>
+                  <span class="text-success">5%</span>
                   <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%; height: 6px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 5%; height: 6px" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
                 </div>
               </div>
@@ -228,7 +249,7 @@
             <div class="col-sm-12">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Revenue Statistics</h4>
+                  <h4 class="card-title">Data Statistika</h4>
                   <div class="flot-chart">
                     <div class="flot-chart-content" id="flot-line-chart" style="padding: 0px; position: relative">
                       <canvas class="flot-base w-100" height="400"></canvas>
@@ -238,6 +259,154 @@
               </div>
             </div>
             <!-- column -->
+          </div>
+          
+          <div class="row">
+            <!-- column -->
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Daftar User</h4>
+                      <div class="table-responsive">
+                      <?php if(mysqli_num_rows($connectproduct) >= 1){?>
+                        <table class="table user-table no-wrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">ID Product</th>
+                                    <th class="border-top-0">Nama Alat</th>
+                                    <th class="border-top-0">Description</th>
+                                    <th class="border-top-0">Harga</th>
+                                    <th class="border-top-0">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <?php 
+                                while ($tampil = mysqli_fetch_array($connectproduct)){
+                              ?>
+                                <tr>
+                                    <td><?=$tampil['id']?></td>
+                                    <td><?=$tampil['NamaAlat']?></td>
+                                    <td><?=$tampil['description']?></td>
+                                    <td><?=$tampil['harga']?></td>
+                                    <td>
+                                      <a class="btn btn-warning" href="product.php" role="button">Ubah Status</a>
+                                    </td>
+                                </tr>
+                              <?php 
+                                }
+                              ?>
+                            </tbody>
+                        </table>
+                      </div>
+                      <?php }else{
+                          echo '<h1 class="text-center">THERE IS NO DATA</h1>';
+                        }
+                      ?>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- column -->
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Daftar User</h4>
+                      <div class="table-responsive">
+                      <?php if(mysqli_num_rows($connectusers) >= 1){?>
+                        <table class="table user-table no-wrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">ID</th>
+                                    <th class="border-top-0">Nama User</th>
+                                    <th class="border-top-0">Email User</th>
+                                    <th class="border-top-0">No Handphone</th>
+                                    <th class="border-top-0">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <?php 
+                                while ($tampil = mysqli_fetch_array($connectusers)){
+                              ?>
+                                <tr>
+                                    <td><?=$tampil['id']?></td>
+                                    <td><?=$tampil['nama']?></td>
+                                    <td><?=$tampil['email']?></td>
+                                    <td><?=$tampil['no_hp']?></td>
+                                    <td>
+                                      <a class="btn btn-warning" href="user.php" role="button">Ubah Status</a>
+                                    </td>
+                                </tr>
+                              <?php 
+                                }
+                              ?>
+                            </tbody>
+                        </table>
+                      </div>
+                      <?php }else{
+                          echo '<h1 class="text-center">THERE IS NO DATA</h1>';
+                        }
+                      ?>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- column -->
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Daftar Transaksi</h4>
+                      <div class="table-responsive">
+                      <?php if(mysqli_num_rows($connect) >= 1){?>
+                        <table class="table user-table no-wrap">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">ID</th>
+                                    <th class="border-top-0">Nama Pelanggan</th>
+                                    <th class="border-top-0">Nama Alat</th>
+                                    <th class="border-top-0">Status</th>
+                                    <th class="border-top-0">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              <?php 
+                                while ($tampil = mysqli_fetch_array($connect)){
+                              ?>
+                                <tr>
+                                    <td><?=$tampil['id']?></td>
+                                    <td><?=$tampil['NamaUser']?></td>
+                                    <td><?=$tampil['namaAlat']?></td>
+                                    <td>
+                                      <?php 
+                                        if ($tampil['status'] == 'Sudah Bayar'){
+                                            echo 'Pembayaran Berhasil';
+                                        }elseif($tampil['bukti_pembayaran'] >= 1){
+                                            echo 'Menunggu Konfirmasi';
+                                        }else{
+                                            echo $tampil['status'];
+                                        }
+                                      ?>
+                                    </td>  
+                                    <td>
+                                      <a class="btn btn-warning" href="transaksi.php" role="button">Ubah Status</a>
+                                    </td>
+                                </tr>
+                              <?php 
+                                }
+                              ?>
+                            </tbody>
+                        </table>
+                      </div>
+                      <?php }else{
+                          echo '<h1 class="text-center">THERE IS NO DATA</h1>';
+                        }
+                      ?>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
         <!-- ============================================================== -->

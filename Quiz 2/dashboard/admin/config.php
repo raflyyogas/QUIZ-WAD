@@ -31,10 +31,7 @@ function login ($data){
             $_SESSION['passowrd'] = $tampil['password'];
             $_SESSION['masuk'] = 'Berhasil Login';
 
-            $_SESSION['login'] = true;
-            if(isset($_POST['remember'])){
-                setcookie('login','true',time()+1800);
-            }
+            $_SESSION['admin'] = true;
             
             header("location:index.php");
             exit();
@@ -56,7 +53,7 @@ function profile($data){
     global $koneksi;
 
     $id = $data['id'];
-    $username = $data['username'];;
+    $username = $data['username'];
     $password = mysqli_real_escape_string($koneksi,$data['password']);
 
     $check = "SELECT * from admin where id ='$id'";
@@ -80,6 +77,46 @@ function profile($data){
     }
 }
 
+function edituser($data){
+    global $koneksi;
+
+    $id = $data['id'];
+    $nama = $data['nama'];
+    $email = $data['email'];
+    $password = mysqli_real_escape_string($koneksi,$data['password']);
+
+    $check = "SELECT * from admin where id ='$id'";
+    $tampil = mysqli_query($koneksi,$check);
+
+    $data = mysqli_num_rows($tampil);
+
+    if($data >= 0){
+        $query = "UPDATE users SET nama='$nama',email='$email',password='$password' WHERE id = '$id'";
+        mysqli_query($koneksi,$query);
+
+        $_SESSION['update'] = 'Berhasil update profile';
+
+        header('location:edituser.php?edit='.$id.'');
+        exit();
+    
+    }else{
+        $_SESSION['ID'] = 'ID tidak temukan!';
+        header('location:edituser.php');
+        exit();
+    }
+}
+
+function status($data){
+    global $koneksi;
+
+    $id = $data['id'];
+    $status = $data['status'];
+    $query = "UPDATE bookings SET status='$status' WHERE id = '$id'";
+    mysqli_query($koneksi,$query);
+    $_SESSION['Berhasil'] = 'Berhasil mengganti status!';
+    header('location:index.php');
+    exit();
+}
 
 if (isset($_GET['logout'])){
     
@@ -94,5 +131,13 @@ if (isset($_GET['logout'])){
     // $_SESSION['logout'] = "Berhasil Logout";
     
     // header('location:login.php');
+}
+if (isset($_GET['delete'])){
+    $id = $_GET["delete"];
+    $query = "DELETE FROM users WHERE id ='$id'";
+    mysqli_query($koneksi,$query);
+    
+    $_SESSION['delete'] = 'Berhasil dihapus!';
+    header('Location: user.php');
 }
 ?>

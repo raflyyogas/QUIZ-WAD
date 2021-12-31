@@ -6,10 +6,6 @@
     }
     require('config.php');
 
-    if(isset($_POST['update'])){
-        profile($_POST);
-    }
-
     if (!isset($_COOKIE['color'])){
         $BGcolor = '#63b9db';
         $TextC = 'text-black';
@@ -22,11 +18,33 @@
             $TextC='text-white';
         }
     }
+    if(isset($_POST['upload'])){    
+        $id = $_POST['id'];
+        $NamaUser = $_POST['NamaUser'];
+        $namaAlat = $_POST['namaAlat'];
+        $harga = $_POST['harga'];
+        $tanggal = $_POST['tanggal'];    
+        $status = $_POST['status'];
+    
+        $rand = rand();
+        $Gambar        = $_FILES['gambar']['name'];    
+        $merge         = $rand.'_'.$Gambar;
+        $ekstensi      = array('png','jpg','jpeg');
+        $format        = explode('.',$merge);
+        $sesi          = strtolower(end($format));
+        $file_tmp      = $_FILES['gambar']['tmp_name'];
+        $query = "UPDATE bookings SET id='$id', bukti_pembayaran='$merge' WHERE id = '$id'";
+        $insert = mysqli_query($koneksi, $query);
+        header("Location:bookings.php");
+    
+        if (in_array($sesi,$ekstensi) === true){
+        move_uploaded_file($file_tmp,'gambar/bukti/'.$merge);
+        }
+    }
 
-    $id = $_SESSION['id'];
-    $query = "SELECT * FROM users WHERE id = '$id'";
-    $data = mysqli_query($koneksi,$query);
-    $tampil = mysqli_fetch_array($data);
+    $id = $_GET['upload'];
+    $data = mysqli_query($koneksi,"Select * from bookings where id ='$id'");
+    $tampil = mysqli_fetch_assoc($data);
 
 
 ?>
@@ -55,8 +73,9 @@
             <div class="collapse navbar-collapse justify-content-end " id="navbarNav">
                 <ul class="navbar-nav ">
                     <div class='dropdown <?=$TextC?>'>
-                        Profile
-                        <a class='dropdown-toggle' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>    
+                        <a class='dropdown-toggle <?=$TextC?>' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>    
+                            
+                            Profile
                         </a>
 
                         <ul class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
@@ -69,80 +88,87 @@
         </div>
     </nav>
 
-    <?php if(isset($_SESSION['update'])) :?>
+    <?php if(isset($_SESSION['success'])) :?>
         <div class='alert alert-success alert-dismissible fade show' role='alert'>
-            <strong><?=$_SESSION['update'];?></strong>
+            <strong><?=$_SESSION['success'];?></strong>
             <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
         </div>
     <?php 
-        unset($_SESSION['update']);
-        endif;
-    ?>
-    
-    <?php if(isset($_SESSION['TidakSama'])) :?>
-        <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-            <strong><?=$_SESSION['TidakSama'];?></strong> Mohon di check kembali
-            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-        </div>
-    <?php 
-        unset($_SESSION['TidakSama']);
+        unset($_SESSION['success']);
         endif;
     ?>    
     
-    <?php if(isset($_SESSION['ID'])) :?>
+    <?php if(isset($_SESSION['ekstensi'])) :?>
         <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-            <strong><?=$_SESSION['ID'];?></strong> Mohon di check kembali
+            <strong><?=$_SESSION['ekstensi'];?></strong> Mohon di check kembali
             <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
         </div>
     <?php 
-        unset($_SESSION['ID']);
+        unset($_SESSION['ekstensi']);
+        endif;
+    ?>
+
+    <?php if(isset($_SESSION['Ukuran'])) :?>
+        <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+            <strong><?=$_SESSION['Ukuran'];?></strong> Mohon di check kembali
+            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+        </div>
+    <?php 
+        unset($_SESSION['Ukuran']);
         endif;
     ?>
 
     <div class="container">
-        <form action="#" method="POST" class="form shadow p-2 mb-5 mt-3 bg-white rounded" style="width:85%">
-            <h3 class="text-center mb-3"><strong>Profile</strong></h3>
+        <form action="" method="POST" enctype="multipart/form-data" class="form shadow p-2 mb-5 mt-3 bg-white rounded" style="width:85%">
+            <h3 class="text-center mb-3"><strong>Upload Bukti Pembayaran</strong></h3>
             
             <div class="row mb-3">
                 <label for="id" class="col-sm-2 col-form-label fw-bold">ID: </label>
                 <div class="col-sm-10">
-                    <input name="id" type="text" class="form-control" id="id" value="<?= $tampil['id'];?>" name="<?= $tampil['id'];?>" readonly>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="nama" class="col-sm-2 col-form-label">Nama</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nama" name="nama" value="<?= $tampil['nama'];?>" required>
+                    <input name="id" type="text" class="form-control" id="id" value="<?php echo $tampil['id'];?>" name="<?php echo $tampil['id'];?>" readonly>
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label for="Email" class="col-sm-2 col-form-label">Email</label>
+                <label for="namaAlat" class="col-sm-2 col-form-label">Nama Pelanggan</label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" name="email" value="<?= $tampil['email'];?>" required>
+                    <input type="text" class="form-control" id="NamaUser" name="NamaUser" value="<?php echo $tampil['NamaUser'];?>" required readonly>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="namaAlat" class="col-sm-2 col-form-label">Nama Alat</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="namaAlat" name="namaAlat" value="<?php echo $tampil['namaAlat'];?>" required readonly>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="hp" class="col-sm-2 col-form-label">Nomor Handphone</label>
+                <label for="harga" class="col-sm-2 col-form-label">Harga</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="hp" name="no_hp" value="<?= $tampil['no_hp'];?>" required>
+                    <input type="number" class="form-control" id="harga" name="harga" value="<?php echo $tampil['harga'];?>" required readonly>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="sandi" class="col-sm-2 col-form-label">Kata sandi</label>
+                <label for="nama" class="col-sm-2 col-form-label">Tanggal Pembelian</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="sandi" placeholder="Kata Sandi" name="sandi">
+                    <input type="text" name="tanggal" class="form-control" id="tanggal" value="<?php echo $tampil['tanggal'];?>" required readonly>
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="confw" class="col-sm-2 col-form-label">Konfirmasi Kata Sandi</label>
+                <label for="status" class="col-sm-2 col-form-label">Status</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="conf" placeholder="Konfirmasi Kata Sandi" name="conf">
+                    <input type="text" class="form-control" id="status" name="status" value="<?php echo $tampil['status'];?>" required readonly>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="status" class="col-sm-2 col-form-label">Upload File Bukti</label>
+                <div class="col-sm-10">
+				    <input type="file" name="gambar" id="gambar" required="required">
                 </div>
             </div>
             <div class="container mt-2 text-center">
-                <button type="submit" class="btn btn-primary btn-md" name="update" id="update">Simpan</button>
-                <a href="index.php" class="btn btn-warning btn-md" >Cancel</a>
+                <button type="upload" class="btn btn-primary btn-md" name="upload" id="upload">Simpan</button>
+                <a href="bookings.php" class="btn btn-secondary btn-md" >Cancel</a>
             </div>
         </form>
     </div>

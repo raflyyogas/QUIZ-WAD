@@ -91,10 +91,11 @@
                 <thead>
                     <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Nama Tempat</th>
-                    <th scope="col">Lokasi</th>
-                    <th scope="col">Tanggal Perjalanan</th>
+                    <th scope="col">Nama Alat</th>
+                    <th scope="col">Tanggal Pembelian</th>
                     <th scope="col">Harga</th>
+                    <th scope="col">Bukti Pembayaran</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Aksi</th>
                     </tr>
                 </thead>
@@ -108,19 +109,50 @@
                     ?>
                         <tr>
                             <td><?=$noUrut?></td>
-                            <td><?=$data['nama_tempat']?></td>
-                            <td><?=$data['lokasi']?></td>
+                            <td><?=$data['namaAlat']?></td>
                             <td><?=$data['tanggal']?></td>
                             <td>Rp <?=number_format($data['harga'], 0, ",", ".")?></td>
-                            <td><a name='delete' class="btn btn-danger" href="config.php?delete=<?=$data['id']?>" role="button">Hapus</a></td>
+                            <td>
+                                <?php if($data['bukti_pembayaran'] == 0){
+                                    echo "";
+                                }else{
+                                    
+                                    echo "<img src='gambar/bukti/$data[bukti_pembayaran]' class='card-img-top'  style='height: 400px;'>";
+                                }
+                                ?>
+                            </td>
+                            <td>
+                                <?php 
+                                    if ($data['status'] == 'Sudah Bayar'){
+                                        echo 'Pembayaran Berhasil';
+                                    }elseif($data['bukti_pembayaran'] >= 1){
+                                        echo 'Menunggu Konfirmasi';
+                                    }else{
+                                        echo $data['status'];
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <?php if($data['bukti_pembayaran'] == 0) {
+                                    echo "<a class='btn btn-danger' href='upload.php?upload=$data[id]' role='button'>Upload Bukti Pembayaran</a>";
+                                } elseif($data['status'] == 'Waiting for payment'){
+                                    echo "<a class='btn btn-warning' href='#' role='button'>Berhasil Upload Bukti Pembayaran</a>";
+                                } elseif($data['status'] == 'Sudah Bayar'){
+                                    echo "<a class='btn btn-success' href='#' role='button'>Pembayaran berhasil dikonfirmasi</a>";
+                                }
+                                ?>
+                                <a class="btn btn-secondary" href="config.php?delete=<?=$data['id']?>" role="button">Hapus</a>
+                            </td>
                         </tr>
                         <?php 
                             $noUrut++;
                         }?>
                         <tr>
                             <td>Total</td>
-                            <td colspan="3"></td>
+                            <td colspan="2"></td>
                             <td>Rp <?=number_format(array_sum($TotalHarga), 0, ",", ".")?></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                         </tr>
                 </tbody>
@@ -132,6 +164,7 @@
         <p class="text-center mt-3 <?=$TextC?>">&copy; Copyright <a href="#" data-bs-toggle="modal" data-bs-target="#identitas">RAFLY_1202190061</a></p>
     </footer>
 
+    <!-- Modal Footer -->
     <div class="modal fade" id="identitas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
